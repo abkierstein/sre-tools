@@ -1,0 +1,45 @@
+name: Build And Push Conatiner Image to Dockerhub
+
+on:
+  push:
+
+jobs:
+  non-main-build:
+   name: Non-Main Build & Push
+   if: ${{ github.ref != 'refs/heads/main' }}
+   runs-on: ubuntu-latest
+   steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: abkierstein/sre-tools:${{ github.sha }}
+
+  main-build:
+   name: Main Build & Push
+   if: ${{ github.ref == 'refs/heads/main' }}
+   runs-on: ubuntu-latest
+   steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: abkierstein/sre-tools:${{ github.sha }},abkierstein/sre-tools:latest

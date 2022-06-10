@@ -17,9 +17,6 @@ RUN apt update && apt install -y --no-install-recommends \
     awscli \
     software-properties-common
 
-# Install rediscli (needs software-properties-common)
-RUN add-apt-repository ppa:redislabs/redis -y && apt update && apt install -y --no-install-recommends redis
-
 # Copy nginx files to proper directory
 RUN rm -rf /var/www/html/*
 ADD nginx-site/ /var/www/html/
