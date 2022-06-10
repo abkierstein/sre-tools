@@ -1,8 +1,6 @@
 # SRE Tools
 A collection of utilities commonly used by SRE for debugging
 
-## Usage
-
 ### Docker
 [sre-tools container image available on dockerhub](https://hub.docker.com/r/abkierstein/sre-tools)
 
@@ -71,9 +69,11 @@ Accept-Ranges: bytes
 ```
 
 Load Testing w/HPA
-*DISCLAIMER: This creates a deployment running a CPU stress test with a horizontal pod autoscaler. Make sure you read the cpu-load-test.yaml manifest before deploying the resource*
+
+DISCLAIMER: This creates a deployment running a CPU stress test with a horizontal pod autoscaler. Make sure you read the cpu-load-test.yaml manifest before deploying the resource
+
 ```
-$ kubectl create -f examples/kubernetes/cpu-load-test.yaml
+$ kubectl create -f https://raw.githubusercontent.com/abkierstein/sre-tools/main/examples/kubernetes/cpu-load-test.yaml
 
 $ kubectl get pods -l app=sre-tools
 NAME                                   READY   STATUS    RESTARTS   AGE
