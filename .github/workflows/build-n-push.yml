@@ -6,7 +6,7 @@ on:
 jobs:
   non-main-build:
    name: Build And Push Conatiner Image to Dockerhub
-   if: ${{ github.ref != "refs/heads/main" }}
+   if: ${{ github.ref != 'refs/heads/main' }}
    runs-on: ubuntu-latest
    steps:
       - name: Checkout
@@ -26,7 +26,7 @@ jobs:
 
   main-build:
    name: Build And Push Conatiner Image to Dockerhub
-   if: ${{ github.ref == "refs/heads/main" }}
+   if: ${{ github.ref == 'refs/heads/main' }}
    runs-on: ubuntu-latest
    steps:
       - name: Checkout
