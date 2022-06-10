@@ -1,11 +1,11 @@
-name: Build and Push
+name: Build And Push Conatiner Image to Dockerhub
 
 on:
   push:
 
 jobs:
   non-main-build:
-   name: Build And Push Conatiner Image to Dockerhub
+   name: Non-Main Build & Push
    if: ${{ github.ref != 'refs/heads/main' }}
    runs-on: ubuntu-latest
    steps:
@@ -25,7 +25,7 @@ jobs:
           tags: abkierstein/sre-tools:${{ github.sha }}
 
   main-build:
-   name: Build And Push Conatiner Image to Dockerhub
+   name: Main Build & Push
    if: ${{ github.ref == 'refs/heads/main' }}
    runs-on: ubuntu-latest
    steps:
