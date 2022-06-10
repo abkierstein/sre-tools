@@ -2,6 +2,8 @@ name: Build And Push Conatiner Image to Dockerhub
 
 on:
   push:
+    paths:
+      - "Dockerfile"
 
 jobs:
   non-main-build:
