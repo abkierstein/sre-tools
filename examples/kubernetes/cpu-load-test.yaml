@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sre-tools-load-test
+  labels:
+    app: sre-tools
+spec:
+  selector:
+    matchLabels:
+      app: sre-tools
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: sre-tools
+    spec:
+      containers:
+        - name: sre-tools-load-test
+          image: abkierstein/sre-tools
+          imagePullPolicy: Always
+          # Runs CPU stress test with 1 process for 300 seconds
+          command: ["stress"]
+          args: ["--cpu", "1", "--timeout", "300"]
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 128Mi
+              cpu: 100m
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: sre-tools-load-test
+spec:
+  maxReplicas: 10
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sre-tools-load-test
+  targetCPUUtilizationPercentage: 90
