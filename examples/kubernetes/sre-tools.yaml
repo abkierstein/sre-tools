@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sre-tools
+  labels:
+    app: sre-tools
+spec:
+  selector:
+    matchLabels:
+      app: sre-tools
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: sre-tools
+    spec:
+      containers:
+        - name: sre-tools
+          image: abkierstein/sre-tools
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 128Mi
+              cpu: 100m
+          livenessProbe:
+            httpGet:
+              host: ''
+              path: /
+              port: 80
+              scheme: HTTP
+          readinessProbe:
+            httpGet:
+              host: ''
+              path: /
+              port: 80
+              scheme: HTTP
+          securityContext:
+            privileged: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sre-tools
+  name: sre-tools
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: sre-tools
+  sessionAffinity: ClientIP
+  type: ClusterIP
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: sre-tools
+spec:
+  maxReplicas: 10
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sre-tools
+  targetCPUUtilizationPercentage: 90
