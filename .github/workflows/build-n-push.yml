@@ -23,4 +23,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: abkierstein/sre-tools:${{ github.sha }}
+          tags: abkierstein/sre-tools:${{ github.sha }},abkierstein/sre-tools:latest
