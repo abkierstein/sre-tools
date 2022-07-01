@@ -116,19 +116,6 @@ volumes:
 
 
 ## Packages Installed
-- inetutils-ping
-- net-tools
-- dnsutils
-- curl
-- ca-certificates
-- stress
-- tcpdump
-- wget
-- netcat
-- vim
-- nginx
-- awscli
-- software-properties-common
-- openssh-client
+[Package List](https://github.com/abkierstein/sre-tools/blob/main/Dockerfile#L8)
 ## Nginx
 Nginx on this container is used to as a way to test availability of a pod through various ingresses & services
