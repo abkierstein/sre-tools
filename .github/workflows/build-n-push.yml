@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "Dockerfile"
+      - ".github/workflows/build-n-push.yml"
 
 jobs:
   non-main-build:
@@ -24,7 +25,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: abkierstein/sre-tools:${{ github.sha }}
+          tags: abkierstein/sre-tools:${{ github.run_id }}
 
   main-build:
    name: Main Build & Push
@@ -44,4 +45,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: abkierstein/sre-tools:${{ github.sha }},abkierstein/sre-tools:latest
+          tags: abkierstein/sre-tools:${{ github.run_id }},abkierstein/sre-tools:latest
