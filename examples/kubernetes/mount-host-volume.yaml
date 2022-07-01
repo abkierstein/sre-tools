@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sre-tools
+  labels:
+    app: sre-tools
+spec:
+  selector:
+    matchLabels:
+      app: sre-tools
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: sre-tools
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - <HOSTNAME>
+      containers:
+        - name: sre-tools
+          image: abkierstein/sre-tools
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 128Mi
+              cpu: 100m
+          livenessProbe:
+            httpGet:
+              host: ''
+              path: /
+              port: 8080
+              scheme: HTTP
+          readinessProbe:
+            httpGet:
+              host: ''
+              path: /
+              port: 8080
+              scheme: HTTP
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - mountPath: /mnt/logs
+              name: host-logs
+      volumes:
+        - hostPath:
+            path: /var/log
+            type: Directory
+          name: host-logs
