@@ -15,13 +15,13 @@ RUN apt update && apt install -y --no-install-recommends \
     vim \
     nginx \
     awscli \
-    software-properties-common
+    software-properties-common \
+    openssh-client
 
 # Copy nginx files to proper directory
-RUN rm -rf /var/www/html/*
-ADD nginx-site/ /var/www/html/
-RUN sed -ie 's|/var/log/nginx/access.log|off|' /etc/nginx/nginx.conf
+COPY nginx/sites-available/default /etc/nginx/sites-available/
+COPY nginx/www/index.html /var/www/html/
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]

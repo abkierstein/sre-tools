@@ -23,7 +23,7 @@ spec:
           imagePullPolicy: Always
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
           resources:
             requests:
@@ -36,16 +36,16 @@ spec:
             httpGet:
               host: ''
               path: /
-              port: 80
+              port: 8080
               scheme: HTTP
           readinessProbe:
             httpGet:
               host: ''
               path: /
-              port: 80
+              port: 8080
               scheme: HTTP
-          securityContext:
-            privileged: true
+          #securityContext:
+          #  privileged: true
 ---
 apiVersion: v1
 kind: Service
@@ -58,7 +58,7 @@ spec:
   - name: http
     port: 8080
     protocol: TCP
-    targetPort: 80
+    targetPort: 8080
   selector:
     app: sre-tools
   sessionAffinity: ClientIP
